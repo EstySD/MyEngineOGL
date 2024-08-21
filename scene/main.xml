@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <objects>
+        <object>
+            <name>teapot</name>
+            <mesh>res/teapot/teapot.obj</mesh>
+        </object>
+    </objects>
+</scene>
