@@ -24,7 +24,9 @@ protected:
 
     void setupMesh();
 };
-class LightMesh: public Mesh {
+class LightMesh{
+private:
+    unsigned int VAO, VBO, EBO;
 public:
     float vertices[108] = {
         -0.5f, -0.5f, -0.5f, 
@@ -69,5 +71,6 @@ public:
         -0.5f,  0.5f,  0.5f,  
         -0.5f,  0.5f, -0.5f,  
     };
-
+    LightMesh();
+    void Draw(Shader& shader);
 };

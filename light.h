@@ -1,18 +1,14 @@
 #include <glm/glm.hpp>
 #include <glad/glad.h> 
 #include <glm/gtc/matrix_transform.hpp>
+#include "transform.h"
 
 #ifndef LIGHT_H_
 #define LIGHT_H_
 class Light {
 public:
 	glm::vec3 color;
-	glm::vec3 position;
-	glm::vec3 direction;
-	void Update(glm::vec3 position, glm::vec3 direction,glm::vec3 color);
-	glm::vec3 GetColor();
-	glm::vec3 GetPosition();
-	glm::vec3 GetDirection();
+	Transform transform;
 };
 class PointLight:public Light {
 public:

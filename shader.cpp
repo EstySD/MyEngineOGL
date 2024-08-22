@@ -85,7 +85,7 @@
 ////////// Basic Shader
  void BasicShader::setDirLight(DirectLight dirLight) {
          use();
-        setVec3("dirLight.direction", dirLight.direction);
+        setVec3("dirLight.direction", dirLight.transform.getLocalRot());
         setVec3("dirLight.color", dirLight.color);
     }
     void BasicShader::appendPointLight(PointLight pointLight) {
@@ -97,7 +97,7 @@
     void BasicShader::updatePointLight(PointLight pointLight, int num) {
 
         std::string count = std::to_string(num-1);
-        setVec3("pointLights[" + count + "].position", pointLight.position);
+        setVec3("pointLights[" + count + "].position", pointLight.transform.getLocalPos());
         setVec3("pointLights[" + count + "].color", pointLight.color);
         setFloat("pointLights[" + count + "].constant", pointLight.constant);
         setFloat("pointLights[" + count + "].linear", pointLight.linear);

@@ -4,10 +4,12 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "mesh.h"
+#include "transform.h"
 class Model {
     public:
         Model(const char* path);
         void Draw(Shader& shader);
+        Transform transform;
     private:
         // model data
         std::vector<Mesh> meshes;
@@ -19,5 +21,4 @@ class Model {
         Mesh processMesh(aiMesh* mesh, const aiScene* scene);
         Mat loadMaterial(aiMaterial* mat);
         unsigned int texturePush(const char* texturePath, TextureType type);
-        unsigned int matPush();
 };
