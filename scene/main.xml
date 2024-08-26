@@ -1,9 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scene>
     <objects>
-        <object>
-            <name>teapot</name>
+        <object name="teapot">
             <mesh>res/teapot/teapot.obj</mesh>
+			<transform>
+				<position>
+					<x>0.0</x>
+					<y>0.0</y>
+					<z>0.0</z>
+				</position>
+				<rotation>
+					<x>0.0</x>
+					<y>0.0</y>
+					<z>0.0</z>
+				</rotation>
+				<scale>
+					<x>1.0</x>
+					<y>1.0</y>
+					<z>1.0</z>
+				</scale>
+			</transform>
+			<shader>1</shader>
         </object>
+		<object name="backpack">
+			<mesh>res/backpack/backpack.obj</mesh>
+			<transform>
+				<position>
+					<x>0.0</x>
+					<y>0.0</y>
+					<z>-2.0</z>
+				</position>
+				<rotation>
+					<x>0.0</x>
+					<y>0.0</y>
+					<z>0.0</z>
+				</rotation>
+				<scale>
+					<x>1.0</x>
+					<y>1.0</y>
+					<z>1.0</z>
+				</scale>
+			</transform>
+			<shader>1</shader>
+		</object>
     </objects>
+	<shaders>
+		<shader id="1">shaders/basicShader.glsl</shader>
+	</shaders>
+	<materials>
+		<material shaderID="1"></material>
+	</materials>
 </scene>

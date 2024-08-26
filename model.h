@@ -5,6 +5,8 @@
 #include <assimp/postprocess.h>
 #include "mesh.h"
 #include "transform.h"
+#include "material.h"
+
 class Model {
     public:
         Model(const char* path);

@@ -28,6 +28,12 @@
     <Filter Include="Resource Files\imgui">
       <UniqueIdentifier>{f3eb9f6e-ede5-4222-b9b1-85b005d57915}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\puguxml">
+      <UniqueIdentifier>{3890f3ef-3068-4042-9085-f3bb0174a349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\scene">
+      <UniqueIdentifier>{b1189044-025d-4aca-be5d-8290c734f0b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -79,6 +85,12 @@
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pugixml\pugixml.cpp">
+      <Filter>Resource Files\puguxml</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -154,6 +166,15 @@
     <ClInclude Include="interface.h">
       <Filter>Source Files\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="pugixml\pugiconfig.hpp">
+      <Filter>Resource Files\puguxml</Filter>
+    </ClInclude>
+    <ClInclude Include="pugixml\pugixml.hpp">
+      <Filter>Resource Files\puguxml</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>Source Files\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png">
@@ -188,5 +209,10 @@
     <Text Include="res\backpack\source_attribution.txt">
       <Filter>Resource Files\textures</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="scene\main.xml">
+      <Filter>Resource Files\scene</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

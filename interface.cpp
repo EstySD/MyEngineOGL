@@ -1,5 +1,4 @@
 #include "interface.h"
-#include <GLFW/glfw3.h>
 
 Interface::Interface(GLFWwindow* window)
 {
@@ -23,56 +22,27 @@ Interface::Interface(GLFWwindow* window)
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
 
-    // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 330");
 }
 
-void Interface::NewFrame()
+
+void Interface::Framerate()
 {
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-}
-
-void Interface::MainFrame()
-{
-    static float f = 0.0f;
-    static int counter = 0;
-
-    ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-    ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-
-    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-
-    if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-        counter++;
-    ImGui::SameLine();
-    ImGui::Text("counter = %d", counter);
-
+    ImGui::Begin("FramerateWindow");
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
     ImGui::End();
+    ImGui::ShowDemoWindow();
 }
 
-void Interface::Render()
+void Interface::SliderAppend(const char* name, glm::vec3& value)
 {
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        GLFWwindow* backup_current_context = glfwGetCurrentContext();
-        ImGui::UpdatePlatformWindows();
-        ImGui::RenderPlatformWindowsDefault();
-        glfwMakeContextCurrent(backup_current_context);
-    }
+    ImGui::SliderFloat3(name, (float*)&value, -10, 10);
 }
 
-void Interface::Destroy()
+void Interface::DragAppend(const char* name, glm::vec3& value)
 {
-    // Cleanup
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+    ImGui::DragFloat3(name, (float*)&value, 0.1);
 }
+
+
+
+

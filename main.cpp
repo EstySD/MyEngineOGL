@@ -66,6 +66,11 @@ int main()
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     Interface interface(window);
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330 core");
+    //scene setup
+    
     //draw setup
     glm::vec3 cubePositions[] = {
         glm::vec3(0.0f,  0.0f,  0.0f),
@@ -110,17 +115,21 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //IMGUI SETUP
-        interface.NewFrame();
-        interface.MainFrame();
-        interface.MainFrame();
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        //imgui frame
+        ImGui::NewFrame();
+        ImGui::Begin("Position");
+        interface.DragAppend("position light", pointLight1.transform.pos);
+        interface.DragAppend("position", cubePositions[0]);
+        ImGui::End();
+        interface.Framerate();
         //rendering
         glm::mat4 projection;
         projection = camera.GetProj();
         glm::mat4 view = camera.GetViewMat();
 
         //light
-        glm::vec3 lpos1 = glm::vec3(glm::sin(glfwGetTime()) * 2, 0.0, glm::cos(glfwGetTime()) * 2);
-        pointLight1.transform.setLocalPos(lpos1);
         lightShader.use();
         pointLight1.transform.setLocalScale(0.2);
         lightShader.setMat4("transform", pointLight1.transform.getTransformMatrix(projection, view));
@@ -149,13 +158,25 @@ int main()
             model1.Draw(basicShader);
         }
         //IMGUI FINISH
-        interface.Render();
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        if (interface.io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            GLFWwindow* backup_current_context = glfwGetCurrentContext();
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            glfwMakeContextCurrent(backup_current_context);
+        }
         //call events
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
     
-    interface.Destroy();
+
+    // Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
     glfwTerminate();
     return 0;
 }
