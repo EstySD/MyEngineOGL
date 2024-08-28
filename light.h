@@ -27,6 +27,7 @@ class SpotLight :public Light {
 
 class DirectLight :public Light {
 public:
+	DirectLight() {};
 	DirectLight(glm::vec3 direction, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
 };
 

@@ -12,7 +12,6 @@ void Model::loadModel(std::string path) {
         return;
     }
     directory = path.substr(0, path.find_last_of('/')+1);
-
     processNode(scene->mRootNode, scene);
 }
 void Model::processNode(aiNode* node, const aiScene* scene) {
@@ -20,6 +19,7 @@ void Model::processNode(aiNode* node, const aiScene* scene) {
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         meshes.push_back(processMesh(mesh, scene));
+        materials_loaded.push_back(loadMaterial(scene->mMaterials[mesh->mMaterialIndex]));
     }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -58,9 +58,8 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
         for (unsigned int j = 0; j < face.mNumIndices; j++)
             indices.push_back(face.mIndices[j]);
     }
-    if (mesh->mMaterialIndex < 0) return Mesh(vertices, indices, Mat());
-    Mat mat = loadMaterial(scene->mMaterials[mesh->mMaterialIndex]);
-    return Mesh(vertices, indices, mat);
+    if (mesh->mMaterialIndex < 0) return Mesh(vertices, indices);
+    return Mesh(vertices, indices);
 }
 Mat Model::loadMaterial(aiMaterial* mat) {
     aiString str;
@@ -89,6 +88,11 @@ unsigned int Model::texturePush(const char* texturePath, TextureType type) {
 }
 void Model::Draw(Shader& shader) {
     for (int i = 0; i < meshes.size(); i++) {
-        meshes[i].Draw(shader);
+        meshes[i].Draw(shader, materials_loaded[i]);
+    }
+}
+void Model::Draw(Shader& shader, Mat customMat) {
+    for (int i = 0; i < meshes.size(); i++) {
+        meshes[i].Draw(shader, customMat);
     }
 }

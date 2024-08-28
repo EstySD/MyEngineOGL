@@ -1,59 +1,42 @@
 #include "transform.h"
 
-void Transform::computeModelMatrix()
-{
-    modelMatrix = getLocalModelMatrix();
-}
 
-void Transform::setLocalPos(glm::vec3 pos)
+void Transform::setPos(glm::vec3 pos)
 {
     this->pos = pos;
 }
 
-void Transform::setLocalRot(glm::vec3 rot)
+void Transform::setRot(glm::vec3 rot)
 {
     this->eulerRot = rot;
 }
 
-void Transform::setLocalScale(glm::vec3 scale)
+void Transform::setScale(glm::vec3 scale)
 {
     this->scale = scale;
 }
 
-void Transform::setLocalScale(float scale)
+void Transform::setScale(float scale)
 {
     this->scale = glm::vec3(scale);
 }
 
-glm::vec3 Transform::getLocalPos()
+glm::vec3 Transform::getPos()
 {
     return pos;
 }
 
-glm::vec3 Transform::getLocalRot()
+glm::vec3 Transform::getRot()
 {
     return eulerRot;
 }
 
-glm::vec3 Transform::getLocalScale()
+glm::vec3 Transform::getScale()
 {
     return scale;
 }
 
-const glm::mat4& Transform::getModelMatrix()
-{
-        return modelMatrix;
-}
-
-const glm::mat4 Transform::getTransformMatrix(glm::mat4 projection, glm::mat4 view)
-{
-    computeModelMatrix();
-    glm::mat4 transform(1.0f);
-    transform = projection * view * modelMatrix * transform;
-    return transform;
-}
-
-glm::mat4 Transform::getLocalModelMatrix()
+const glm::mat4 Transform::getModelMatrix()
 {
     const glm::mat4 transformX = glm::rotate(glm::mat4(1.0f),
         glm::radians(eulerRot.x),
@@ -73,3 +56,6 @@ glm::mat4 Transform::getLocalModelMatrix()
         roationMatrix *
         glm::scale(glm::mat4(1.0f), scale);
 }
+
+
+

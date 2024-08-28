@@ -5,17 +5,19 @@
 #include <assimp/postprocess.h>
 #include "mesh.h"
 #include "transform.h"
-#include "material.h"
 
 class Model {
     public:
         Model(const char* path);
         void Draw(Shader& shader);
-        Transform transform;
+        void Draw(Shader& shader, Mat customMat);
+        std::vector<Transform> transforms;
+        unsigned int MaterialIndex;
     private:
         // model data
         std::vector<Mesh> meshes;
         std::vector<Texture> textures_loaded;
+        std::vector<Mat> materials_loaded;
         std::string directory;
 
         void loadModel(std::string path);

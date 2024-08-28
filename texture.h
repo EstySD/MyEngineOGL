@@ -1,9 +1,12 @@
 #include "glad/glad.h"
 #include <vector>
 #include <iostream>
+#ifndef TEXTURE_H_
+#define TEXTURE_H_
 enum TextureType {
 	diffuse,
-	specular
+	specular,
+	normal
 };
 class Texture {
 public:
@@ -17,3 +20,4 @@ private:
 	void Import(const char* texturePath, TextureType type);
 	void Gen();
 };
+#endif // !TEXTURE_H_

@@ -14,9 +14,8 @@ public:
     // mesh data
     std::vector<Vertex>       vertices;
     std::vector<unsigned int> indices;
-    Mat mat;
-    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Mat mat);
-    void Draw(Shader& shader);
+    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+    void Draw(Shader& shader, Mat mat);
     void Delete();
 protected:
     //  render data

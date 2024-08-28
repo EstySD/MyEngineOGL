@@ -20,6 +20,7 @@ private:
 public:
     unsigned int id;
     Shader(const char* filepath);
+    Shader() {};
     void use();
     void setBool(const std::string& name, bool value) const;
     void setInt(const std::string& name, int value) const;
@@ -35,7 +36,6 @@ class BasicShader:public Shader {
 public:
     using Shader::Shader;
     void setDirLight(DirectLight dirLight);
-    void appendPointLight(PointLight pointLight);
     void updatePointLight(PointLight pointLight, int num);
     void setSpotLight(SpotLight spotLight);
 private:

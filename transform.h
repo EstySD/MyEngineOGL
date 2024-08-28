@@ -14,17 +14,13 @@ public:
     glm::vec3 pos = { 0.0f, 0.0f, 0.0f };
     glm::vec3 eulerRot = { 0.0f, 0.0f, 0.0f };
     glm::vec3 scale = { 1.0f, 1.0f, 1.0f };
-    void computeModelMatrix();
-    void setLocalPos(glm::vec3 pos);
-    void setLocalRot(glm::vec3 rot);
-    void setLocalScale(glm::vec3 scale);
-    void setLocalScale(float scale);
-    glm::vec3 getLocalPos();
-    glm::vec3 getLocalRot();
-    glm::vec3 getLocalScale();
-    const glm::mat4& getModelMatrix();
-    const glm::mat4 getTransformMatrix(glm::mat4 projection, glm::mat4 view);
-protected:
-    glm::mat4 getLocalModelMatrix();
+    void setPos(glm::vec3 pos);
+    void setRot(glm::vec3 rot);
+    void setScale(glm::vec3 scale);
+    void setScale(float scale);
+    glm::vec3 getPos();
+    glm::vec3 getRot();
+    glm::vec3 getScale();
+    const glm::mat4 getModelMatrix();
 };
 #endif

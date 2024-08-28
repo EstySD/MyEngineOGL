@@ -16,7 +16,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "camera.h"
-#include "model.h"
+#include "scene.h"
 #include "light.h"
 #include "interface.h"
 
@@ -72,32 +72,9 @@ int main()
     //scene setup
     
     //draw setup
-    glm::vec3 cubePositions[] = {
-        glm::vec3(0.0f,  0.0f,  0.0f),
-        glm::vec3(2.0f,  5.0f, -15.0f),
-        glm::vec3(-1.5f, -2.2f, -2.5f),
-        glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3(2.4f, -0.4f, -3.5f),
-        glm::vec3(-1.7f,  3.0f, -7.5f),
-        glm::vec3(1.3f, -2.0f, -2.5f),
-        glm::vec3(1.5f,  2.0f, -2.5f),
-        glm::vec3(1.5f,  0.2f, -1.5f),
-        glm::vec3(-1.3f,  1.0f, -1.5f)
-    };
-    Model model1("res/backpack/backpack.obj");
-    BasicShader basicShader = BasicShader("shaders/basicShader.glsl");
 
-    LightMesh lightMesh;
-    Shader lightShader("shaders/lightShader.glsl");
-    PointLight pointLight1(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(1.0f, 1.0f, 1.0f),1.0, 0.07f,0.017f);
-    PointLight pointLight2(glm::vec3(-4.0f, 0.0f, -14.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0, 0.07f, 0.017f);
+    Scene scene("scene/main.xml");
 
-    DirectLight directLight(glm::vec3(-0.5f, -0.5f,-0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
-
-    basicShader.use();
-    basicShader.setDirLight(directLight);
-    basicShader.appendPointLight(pointLight1);
-    basicShader.appendPointLight(pointLight2);
 
     camera.SetSpawn(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 45.0f);
     
@@ -120,43 +97,15 @@ int main()
         //imgui frame
         ImGui::NewFrame();
         ImGui::Begin("Position");
-        interface.DragAppend("position light", pointLight1.transform.pos);
-        interface.DragAppend("position", cubePositions[0]);
         ImGui::End();
         interface.Framerate();
         //rendering
-        glm::mat4 projection;
-        projection = camera.GetProj();
-        glm::mat4 view = camera.GetViewMat();
 
         //light
-        lightShader.use();
-        pointLight1.transform.setLocalScale(0.2);
-        lightShader.setMat4("transform", pointLight1.transform.getTransformMatrix(projection, view));
-        lightShader.setVec3("color", pointLight1.color);
-        lightMesh.Draw(lightShader);
+        scene.updateCamera(camera.GetPos(), camera.GetProj(), camera.GetViewMat());
+        scene.Draw();
+        ////mesh
 
-        pointLight2.transform.setLocalScale(0.2);
-        lightShader.setMat4("transform", pointLight2.transform.getTransformMatrix(projection, view));
-        lightShader.setVec3("color", pointLight2.color);
-        lightMesh.Draw(lightShader);
-
-        //mesh
-
-        basicShader.use();
-        //dynamic light
-        basicShader.updatePointLight(pointLight1, 1);
-        basicShader.updatePointLight(pointLight2, 2);
-
-        basicShader.setVec3("viewPos", camera.GetPos());
-        for (unsigned int i = 0; i < 5; i++)
-        {
-            model1.transform.setLocalPos(cubePositions[i]);
-            model1.transform.setLocalRot(glm::vec3(1.0f, 0.3f, 0.5f));
-            basicShader.setMat4("transform", model1.transform.getTransformMatrix(projection, view));
-            basicShader.setMat4("model", model1.transform.getModelMatrix());
-            model1.Draw(basicShader);
-        }
         //IMGUI FINISH
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -234,8 +183,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         glfwSetInputMode(window, GLFW_CURSOR,
             glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_NORMAL ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
         interfaceToggle = !interfaceToggle;
-        firstMouse = !firstMouse;
-        std::cout << interfaceToggle << std::endl;
+        firstMouse = true;
     }
         
 }
