@@ -22,9 +22,6 @@
     <Filter Include="Resource Files\libs">
       <UniqueIdentifier>{c4bf3306-bf8b-4b0d-abb8-6be614e974c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\imgui">
-      <UniqueIdentifier>{74228dae-2105-4647-ab63-21460532c3cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\imgui">
       <UniqueIdentifier>{f3eb9f6e-ede5-4222-b9b1-85b005d57915}</UniqueIdentifier>
     </Filter>
@@ -33,6 +30,12 @@
     </Filter>
     <Filter Include="Resource Files\scene">
       <UniqueIdentifier>{b1189044-025d-4aca-be5d-8290c734f0b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\imgui\imgui">
+      <UniqueIdentifier>{74228dae-2105-4647-ab63-21460532c3cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\filedialog">
+      <UniqueIdentifier>{2d294f69-29aa-4370-9699-77532c7b4181}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,25 +67,25 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_demo.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_draw.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_glfw.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_tables.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_widgets.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui\imgui</Filter>
     </ClCompile>
     <ClCompile Include="interface.cpp">
       <Filter>Source Files</Filter>
@@ -92,6 +95,12 @@
     </ClCompile>
     <ClCompile Include="scene.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyfiledialogs\more_dialogs\tinyfd_moredialogs.cpp">
+      <Filter>Resource Files\filedialog</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyfiledialogs\tinyfiledialogs.cpp">
+      <Filter>Resource Files\filedialog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +187,12 @@
     <ClInclude Include="object.h">
       <Filter>Source Files\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tinyfiledialogs\more_dialogs\tinyfd_moredialogs.h">
+      <Filter>Resource Files\filedialog</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyfiledialogs\tinyfiledialogs.h">
+      <Filter>Resource Files\filedialog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png">
@@ -205,6 +220,9 @@
       <Filter>Resource Files\textures</Filter>
     </Image>
     <Image Include="res\backpack\specular.jpg">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="res\black.png">
       <Filter>Resource Files\textures</Filter>
     </Image>
   </ItemGroup>

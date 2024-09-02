@@ -3,7 +3,7 @@
 
     Shader::Shader(const char* filepath) {
 
-        m_filepath = filepath;
+        this->filepath = filepath;
         ShaderSource shadersource = ParseShader();
         unsigned int vertexShader = CompileShader(shadersource.VertexSource, GL_VERTEX_SHADER);
         unsigned int fragmentShader = CompileShader(shadersource.FragmentSource, GL_FRAGMENT_SHADER);
@@ -23,8 +23,8 @@
     }
     ShaderSource Shader::ParseShader()
     {
-        std::ifstream stream(m_filepath);
-        if (stream.is_open() == false) std::cout << "couldn't find shader: " << m_filepath << std::endl;
+        std::ifstream stream(filepath);
+        if (stream.is_open() == false) std::cout << "couldn't find shader: " << filepath << std::endl;
         std::string line;
         std::stringstream ss[2];
         enum class ShaderType {
@@ -94,9 +94,7 @@
         std::string count = std::to_string(num);
         setVec3("pointLights[" + count + "].position", pointLight.transform.getPos());
         setVec3("pointLights[" + count + "].color", pointLight.color);
-        setFloat("pointLights[" + count + "].constant", pointLight.constant);
-        setFloat("pointLights[" + count + "].linear", pointLight.linear);
-        setFloat("pointLights[" + count + "].quadratic", pointLight.quadratic);
+        setVec3("pointLights[" + count + "].clq", pointLight.clq);
     }
     void BasicShader::setSpotLight(SpotLight spotLight) {
         use();

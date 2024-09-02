@@ -12,11 +12,12 @@ public:
 };
 class PointLight:public Light {
 public:
-    float constant, linear, quadratic;
+	glm::vec3 clq;
 	
 
-	PointLight(glm::vec3 position,glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f), float constant = 1.0f, float linear=0.14f, float quadratic=0.07f);
-	void UpdateDistance(float constant, float linear, float quadratic);
+	PointLight(glm::vec3 position, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 scale = glm::vec3(1.0),
+		glm::vec3 clq=glm::vec3(1.0f, 0.7f, 1.8f)); //constant linear quadratic
+	void UpdateDistance(glm::vec3 clq = glm::vec3(1.0f, 0.7f, 1.8f));
 	
 };
 class SpotLight :public Light {

@@ -151,6 +151,8 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="texture.cpp" />
+    <ClCompile Include="tinyfiledialogs\more_dialogs\tinyfd_moredialogs.cpp" />
+    <ClCompile Include="tinyfiledialogs\tinyfiledialogs.cpp" />
     <ClCompile Include="transform.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +184,8 @@
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="texture.h" />
+    <ClInclude Include="tinyfiledialogs\more_dialogs\tinyfd_moredialogs.h" />
+    <ClInclude Include="tinyfiledialogs\tinyfiledialogs.h" />
     <ClInclude Include="transform.h" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +195,7 @@
     <Image Include="res\backpack\normal.png" />
     <Image Include="res\backpack\roughness.jpg" />
     <Image Include="res\backpack\specular.jpg" />
+    <Image Include="res\black.png" />
     <Image Include="res\container.jpg" />
     <Image Include="res\container2.png" />
     <Image Include="res\container2_specular.png" />

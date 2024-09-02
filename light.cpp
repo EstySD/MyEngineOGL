@@ -1,16 +1,14 @@
 #include "light.h"
 
-PointLight::PointLight(glm::vec3 position, glm::vec3 color, float constant, float linear, float quadratic) {
+PointLight::PointLight(glm::vec3 position, glm::vec3 color,glm::vec3 scale,
+    glm::vec3 clq) {
     transform.setPos(position);
+    transform.setScale(scale);
     this->color = color;
-    this->constant = constant;
-    this->linear = linear;
-    this->quadratic = quadratic;
+    this->clq = clq;
 }
-void PointLight::UpdateDistance(float constant, float linear, float quadratic) {
-    this->constant = constant;
-    this->linear = linear;
-    this->quadratic = quadratic;
+void PointLight::UpdateDistance(glm::vec3 clq) {
+    this->clq = clq;
 }
 
 

@@ -1,7 +1,8 @@
 #include "mesh.h"
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices) {
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, unsigned int materialIndex) {
 	this->vertices = vertices;
 	this->indices = indices;
+    this->materialIndex = materialIndex;
 	setupMesh();
 }
 void Mesh::setupMesh() {
@@ -24,7 +25,7 @@ void Mesh::setupMesh() {
     glEnableVertexAttribArray(2);
     glBindVertexArray(0);
 }
-void Mesh::Draw(Shader &shader, Mat mat) {
+void Mesh::Draw(Shader &shader, Mat& mat) {
     shader.use();
     shader.setFloat("material.ambient", 0.05f);
     glActiveTexture(GL_TEXTURE0);

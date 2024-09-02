@@ -14,13 +14,12 @@ struct ShaderSource {
     std::string FragmentSource;
 };
 class Shader {
-    
 private:
-    const char* m_filepath;
-public:
     unsigned int id;
+public:
+    const char* filepath;
     Shader(const char* filepath);
-    Shader() {};
+    Shader():id(-1), filepath("-1") {};
     void use();
     void setBool(const std::string& name, bool value) const;
     void setInt(const std::string& name, int value) const;

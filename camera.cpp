@@ -15,17 +15,16 @@ glm::vec3 Camera::GetPos() {
 glm::vec3 Camera::GetDir() {
 	return m_direction;
 }
-void Camera::Update(float deltaTime, float width, float height) {
+void Camera::Update(float deltaTime, glm::vec2 resoultion) {
 	m_deltaTime = deltaTime;
-	m_width = width;
-	m_height = height;
+	this->resolution = resoultion;
 }
-void Camera::Rotate(float xoffset, float yoffset) {
+void Camera::Rotate(glm::vec2 offset) {//yaw and pitch
 	const float sensitivity = 0.1f;
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-	yaw += xoffset;
-	pitch += yoffset;
+	offset.x *= sensitivity;
+	offset.y *= sensitivity;
+	yaw += offset.x;
+	pitch += offset.y;
 	if (pitch > 89.0f)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
@@ -58,6 +57,6 @@ glm::mat4 Camera::GetViewMat() {
 }
 glm::mat4 Camera::GetProj() {
 	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(m_fov), (float)m_width / (float)m_height, 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(m_fov), resolution.x / resolution.y, 0.1f, 100.0f);
 	return projection;
 }

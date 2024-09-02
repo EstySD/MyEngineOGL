@@ -1,15 +1,26 @@
+
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include <GLFW/glfw3.h>
-
+#include <vector>
 #include <glm/glm.hpp>
-class Interface {
+#include <glm/gtc/type_ptr.hpp>
+#include "scene.h"
+#include "tinyfiledialogs/tinyfiledialogs.h"
+class Editor {
 private:
+	enum ObjectType {
+		None,
+		ObjectTp,
+		PointLightTp,
+		DirLightTp
+	};
+	void SliderAppend(const char* name, glm::vec3& value, float min = -1.0, float max = 1.0);
+	void ColorAppend(const char* name, glm::vec3& value);
+	void DragAppend(const char* name, glm::vec3& value, float step = 0.1);
 public:
 	ImGuiIO& io = ImGui::GetIO();
-	Interface(GLFWwindow* window);
+	Editor(GLFWwindow* window);
 	void Framerate();
-	void SliderAppend(const char* name, glm::vec3& value);
-	void DragAppend(const char* name, glm::vec3& value);
+	void ScenePanels(Scene& scene);
 };

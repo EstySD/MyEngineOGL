@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <objects>
+        <object>
+            <path>res/teapot/teapot.obj</path>
+				<transform>
+					<position>
+						<x>-3.0</x>
+						<y>0.0</y>
+						<z>0.0</z>
+					</position>
+					<rotation>
+						<x>0.0</x>
+						<y>100</y>
+						<z>0.0</z>
+					</rotation>
+					<scale>
+						<x>1.0</x>
+						<y>1.0</y>
+						<z>1.0</z>
+					</scale>
+				</transform>
+			<material>0</material>
+        </object>
+		
+    </objects>
+	<shaders>
+		<shader>shaders/basicShader.glsl</shader>
+	</shaders>
+	<materials>
+		<material shader="0"></material>
+		<material shader="0">
+			<diffuse>res/awesomeface.png</diffuse>
+			<specular>res/awesomeface.png</specular>
+			<normal>res/normal.png</normal>
+		</material>
+	</materials>
+	<lights>
+		<directLight>
+			<rotation>
+				<x>-0.5</x>
+				<y>-1.0</y>
+				<z>0.0</z>
+			</rotation>
+			<color>
+				<x>1.0</x>
+				<y>1.0</y>
+				<z>1.0</z>
+			</color>
+		</directLight>
+		<pointLights>
+			<pointLight>
+				<position>
+					<x>2.0</x>
+					<y>0.0</y>
+					<z>0.0</z>
+				</position>
+				<scale>0.2</scale>
+				<color>
+					<x>1.0</x>
+					<y>1.0</y>
+					<z>1.0</z>
+				</color>
+				<constant>1.0</constant>
+				<linear>0.08</linear>
+				<quadratic>0.017</quadratic>
+			</pointLight>
+
+		</pointLights>
+	</lights>
+</scene>

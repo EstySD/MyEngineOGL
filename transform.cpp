@@ -1,6 +1,10 @@
 #include "transform.h"
 
 
+Transform::Transform(glm::vec3 pos, glm::vec3 eulerRot, glm::vec3 scale )
+{
+}
+
 void Transform::setPos(glm::vec3 pos)
 {
     this->pos = pos;

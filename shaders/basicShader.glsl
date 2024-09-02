@@ -46,9 +46,7 @@ uniform Material material;
 struct PointLight {
     vec3 position;
     vec3 color;
-    float constant;
-    float linear;
-    float quadratic;
+    vec3 clq;
 };
 #define MAX_POINT_LIGHTS 4
 uniform int pointLightsCount;
@@ -85,8 +83,8 @@ vec3 CalcPointLight(PointLight light, vec3 norm, vec3 viewDir, MapsSample mapsSa
     vec3 specular = mapsSample.specular*spec;
 
     float dist    = length(light.position - fragPos);
-    float attenuation = 1.0 / (light.constant + light.linear * dist + 
-  			     light.quadratic * (dist * dist));
+    float attenuation = 1.0 / (light.clq.x + light.clq.y * dist + 
+  			     light.clq.z * (dist * dist));
 
     return (diffuse+specular)*attenuation*light.color;
 };

@@ -21,13 +21,13 @@
 #include "interface.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int n_width, int n_height);
-unsigned int width = 1280, height = 720;
+glm::vec2 resolution(1920, 1080);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-float lastX = (float)width/2, lastY = (float)height/2;
+glm::vec2 lastMousPos(resolution.x / 2, resolution.y / 2);
 void processInput(GLFWwindow* window);
-float deltaTime = 0.0f;	// Time between current frame and last frame
+float deltaTime = 0.0f;	
 float lastFrame = 0.0f;
 Camera camera = Camera();
 bool firstMouse = true;
@@ -40,7 +40,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    GLFWwindow* window = glfwCreateWindow(width, height, "OpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow((int)resolution.x, (int)resolution.y, "OpenGL", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -54,7 +54,7 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, resolution.x, resolution.y);
     //callbacks
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -65,18 +65,14 @@ int main()
     //imgui
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    Interface interface(window);
+    Editor interface(window);
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330 core");
-    //scene setup
-    
-    //draw setup
 
     Scene scene("scene/main.xml");
 
-
-    camera.SetSpawn(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 45.0f);
+    camera.SetSpawn(scene.viewPos, glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 45.0f);
     
     while (!glfwWindowShouldClose(window))
     {
@@ -86,7 +82,7 @@ int main()
         //input
         processInput(window);
         //camera
-        camera.Update(deltaTime, (float)width, (float)height);
+        camera.Update(deltaTime, resolution);
         
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -96,15 +92,13 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         //imgui frame
         ImGui::NewFrame();
-        ImGui::Begin("Position");
-        ImGui::End();
         interface.Framerate();
+        interface.ScenePanels(scene);
         //rendering
 
-        //light
-        scene.updateCamera(camera.GetPos(), camera.GetProj(), camera.GetViewMat());
+        //scene
+        scene.UpdateCamera(camera);
         scene.Draw();
-        ////mesh
 
         //IMGUI FINISH
         ImGui::Render();
@@ -132,27 +126,22 @@ int main()
 
 void framebuffer_size_callback(GLFWwindow* window, int n_width, int n_height)
 {
-    width = n_width;
-    height = n_height;
-    glViewport(0, 0, width, height);
-    lastX = (float)width / 2;
-    lastY = (float)height / 2;
+    resolution = glm::vec2(n_width, n_height);
+    glViewport(0, 0, resolution.x, resolution.y);
+    lastMousPos = glm::vec2(resolution.x / 2, resolution.y / 2);
 }
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     if (interfaceToggle) return;
     if (firstMouse)
     {
-        lastX = (float)xpos;
-        lastY = (float)ypos;
+        lastMousPos = glm::vec2(xpos, ypos);
         firstMouse = false;
     }
-
-    float xoffset = (float)xpos - lastX;
-    float yoffset = lastY - (float)ypos; // reversed since y-coordinates range from bottom to top
+    glm::vec2 offset((float)xpos - lastMousPos.x, lastMousPos.y - (float)ypos);
+     // reversed since y-coordinates range from bottom to top
     
-    camera.Rotate((float)xoffset, (float)yoffset);
-    lastX = (float)xpos;
-    lastY = (float)ypos;
+    camera.Rotate(offset);
+    lastMousPos = glm::vec2(xpos, ypos);
 
     
 }

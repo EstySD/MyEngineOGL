@@ -2,14 +2,13 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 Texture::Texture() {
-    Gen();
 }
 Texture::Texture(const char* texturePath, TextureType type) {
+    path = texturePath;
     Gen();
     Import(texturePath, type);
 }
 void Texture::Import(const char* texturePath, TextureType type) {
-    path = texturePath;
     this->type = type;
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
@@ -19,6 +18,7 @@ void Texture::Import(const char* texturePath, TextureType type) {
         std::cout << "Failed to load texture: " << path << std::endl;
         data = stbi_load("res/black.png", &width, &height, &nrChannels, 0);
     }
+
     unsigned int format = GL_RGBA;
     if (nrChannels == 1)
         format = GL_RED;

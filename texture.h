@@ -1,4 +1,4 @@
-#include "glad/glad.h"
+#include <glad/glad.h>
 #include <vector>
 #include <iostream>
 #ifndef TEXTURE_H_
@@ -11,7 +11,7 @@ enum TextureType {
 class Texture {
 public:
 	unsigned int id;
-	std::string path;
+	const char* path;
 	TextureType type;
 	Texture();
 	Texture(const char* texturePath, TextureType type);
