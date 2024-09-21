@@ -25,18 +25,10 @@ void Mesh::setupMesh() {
     glEnableVertexAttribArray(2);
     glBindVertexArray(0);
 }
-void Mesh::Draw(Shader &shader, Mat& mat) {
-    shader.use();
-    shader.setFloat("material.ambient", 0.05f);
-    glActiveTexture(GL_TEXTURE0);
-    mat.diffuse.Bind();
-    shader.setInt("material.diffuse", 0);
-    glActiveTexture(GL_TEXTURE1);
-    mat.specular.Bind();
-    shader.setInt("material.specular", 1);
-    shader.setFloat("material.shininess", 32.0f);
+void Mesh::Draw() {
+
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
 }
@@ -47,7 +39,7 @@ void Mesh::Delete() {
     glDeleteBuffers(1, &VBO);
 }
 
-LightMesh::LightMesh()
+BillBoard::BillBoard()
 {
 
     glGenVertexArrays(1, &VAO);
@@ -58,14 +50,34 @@ LightMesh::LightMesh()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices[0], GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(sizeof(float) * 3));
+    glEnableVertexAttribArray(1);
+
     glBindVertexArray(0);
 }
 
-void LightMesh::Draw(Shader& shader)
+void BillBoard::Draw(Shader& shader, Transform& transform, glm::mat4& view)
 {
-    shader.use();
+    glm::vec3 CameraRight_worldspace = glm::vec3(view[0][0], view[1][0], view[2][0]);
+    glm::vec3 CameraUp_worldspace = glm::vec3(view[0][1], view[1][1], view[2][1]);
+    float newVertices[20];
+    std::copy(std::begin(vertices), std::end(vertices), std::begin(newVertices));
+    for (int i = 0; i < 4; i++) {
+        glm::vec3 v = transform.getPos() + CameraRight_worldspace * vertices[0+5*i]  +
+            CameraUp_worldspace * vertices[1+5*i];
+        newVertices[5 * i] = v.x;
+        newVertices[5 * i+1] = v.y;
+        newVertices[5 * i+2] = v.z;
+    }
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(newVertices), &newVertices[0], GL_STATIC_DRAW);
+
+    shader.use();
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 }

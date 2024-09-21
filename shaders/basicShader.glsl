@@ -63,7 +63,9 @@ struct SpotLight{
     float cutOff;
     float outercutOff;
 };
-uniform SpotLight spotLight;
+#define MAX_SPOT_LIGHTS 4
+uniform int spotLightsCount;
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 vec3 CalcDirLight(DirLight light, vec3 norm, vec3 viewDir, MapsSample mapsSample){
     vec3 lightDir =-normalize(light.direction);
     vec3 diffuse = mapsSample.diffuse*max(dot(norm, lightDir), 0.0); // value
@@ -124,6 +126,9 @@ void main()
     res+= CalcDirLight(dirLight, inormal,viewDir, mapsSample);
     for(int i=0; i<pointLightsCount; i++){
         res+=CalcPointLight(pointLights[i], inormal, viewDir, mapsSample, fragPos);
+    }
+    for(int i=0;i<spotLightsCount; i++){
+        res += CalcSpotLight(spotLights[i],inormal, viewDir, mapsSample, fragPos);
     }
     fragColor = vec4(res, 1.0);
 }

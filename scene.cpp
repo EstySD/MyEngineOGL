@@ -22,9 +22,10 @@ void Scene::LoadCamera()
 }
 void Scene::UpdateCamera(Camera& cam)
 {
-	this->viewPos = cam.GetPos();
-	this->view = cam.GetViewMat();
 	this->projection = cam.GetProj();
+	this->view = cam.GetView();
+	this->viewPos = cam.GetPos();
+	this->resolution = cam.resolution;
 	pugi::xml_node camPos=doc.child("scene").child("camera").child("position");
 	camPos.child("x").text().set(viewPos.x);
 	camPos.child("y").text().set(viewPos.y);
@@ -155,6 +156,7 @@ void Scene::LoadMaterials()
 	for (pugi::xml_node xml_material : xml_materials.children()) {
 		Mat mat;
 		mat.shaderIndex = xml_material.attribute("shader").as_uint();
+		mat.setMode((MatType)xml_material.attribute("type").as_uint());
 		if (!xml_material.child("diffuse")) {
 			materials.push_back(mat);
 			continue;
@@ -176,6 +178,7 @@ void Scene::SaveMaterials()
 	for (pugi::xml_node xml_material : xml_materials.children()) {
 		Mat mat = materials[i];
 		xml_material.attribute("shader").set_value(mat.shaderIndex);
+		xml_material.attribute("type").set_value(mat.getMode());
 		if (mat.empty) continue;
 		xml_material.child("diffuse").text().set(mat.diffuse.path);
 		xml_material.child("specular").text().set(mat.specular.path);
@@ -189,9 +192,12 @@ void Scene::AppendMaterial(Mat mat)
 	pugi::xml_node xml_materials = doc.child("scene").child("materials");
 	pugi::xml_node xml_mat = xml_materials.append_child("material");
 	xml_mat.append_attribute("shader").set_value(mat.shaderIndex);
-	xml_mat.append_child("diffuse").text().set(mat.diffuse.path);
-	xml_mat.append_child("specular").text().set(mat.specular.path);
-	xml_mat.append_child("normal").text().set(mat.normal.path);
+	xml_mat.append_attribute("type").set_value(mat.getMode());
+	if (!mat.empty) {
+		xml_mat.append_child("diffuse").text().set(mat.diffuse.path);
+		xml_mat.append_child("specular").text().set(mat.specular.path);
+		xml_mat.append_child("normal").text().set(mat.normal.path);
+	}
 	materials.push_back(mat);
 }
 
@@ -240,6 +246,11 @@ void Scene::DeletePointLight(unsigned int &num)
 	pointLights.erase(pointLights.begin() + num);
 }
 
+glm::vec3& Scene::GetCamPos()
+{
+	return viewPos;
+}
+
 std::vector<Model>& Scene::GetModels()
 {
 	return models;
@@ -258,7 +269,7 @@ DirectLight& Scene::GetDirLight()
 void Scene::LoadLight()
 {
 
-	lightShader = Shader("shaders/lightShader.glsl");
+	lightShader = Shader("shaders/LightBillboard.glsl");
 	pugi::xml_node xml_lights = doc.child("scene").child("lights");
 	 //direct light
 	pugi::xml_node xml_directLight = xml_lights.child("directLight");
@@ -291,7 +302,29 @@ void Scene::LoadLight()
 		quadratic = xml_pointLight.child("quadratic").text().as_float();
 		pointLights.push_back(PointLight(position, color, glm::vec3(size),glm::vec3(constant, linear, quadratic)));
 	}
-
+	//spot light
+	for (pugi::xml_node xml_spotLight : xml_lights.child("spotLights").children()) {
+		glm::vec3 position, direction, color;
+		float cutOff, outercutOff;
+		pugi::xml_node xml_pos = xml_spotLight.child("position");
+		float x = xml_pos.child("x").text().as_float();
+		float y = xml_pos.child("y").text().as_float();
+		float z = xml_pos.child("z").text().as_float();
+		position = glm::vec3(x, y, z);
+		pugi::xml_node xml_color = xml_spotLight.child("color");
+		x = xml_color.child("x").text().as_float();
+		y = xml_color.child("y").text().as_float();
+		z = xml_color.child("z").text().as_float();
+		color = glm::vec3(x, y, z);
+		pugi::xml_node xml_direction = xml_spotLight.child("rotation");
+		x = xml_direction.child("x").text().as_float();
+		y = xml_direction.child("y").text().as_float();
+		z = xml_direction.child("z").text().as_float();
+		direction = glm::vec3(x, y, z);
+		cutOff = xml_spotLight.child("cutOff").text().as_float();
+		outercutOff = xml_spotLight.child("outercutOff").text().as_float();
+		spotLights.push_back(SpotLight(position, direction, color, cutOff, outercutOff));
+	}
 }
 
 void Scene::SaveLight()
@@ -337,7 +370,7 @@ void Scene::ObjectsDraw()
 		unsigned int matIndex = models[i].MaterialIndex;
 		unsigned int shaderIndex = materials[matIndex].shaderIndex;
 		shaders[shaderIndex].use();
-		shaders[shaderIndex].setVec3("viewPos", viewPos);
+		shaders[shaderIndex].setVec("viewPos", viewPos);
 		glm::mat4 mvp = glm::mat4(1.0);
 		glm::mat4 model = models[i].transform.getModelMatrix();
 		mvp = projection*view*model*mvp;
@@ -356,10 +389,12 @@ void Scene::LightDraw()
 	lightShader.use();
 	for (int i = 0; i < pointLights.size(); i++) {
 		glm::mat4 mvp = glm::mat4(1.0);
-		mvp = projection * view * pointLights[i].transform.getModelMatrix()*mvp;
+		mvp = projection *view
+			* pointLights[i].transform.getModelMatrix() * mvp;
 		lightShader.setMat4("transform", mvp);
-		lightShader.setVec3("color", pointLights[i].color);
-		lightMesh.Draw(lightShader);
+		lightShader.setVec("color", pointLights[i].color);
+		lightShader.setVec("resolution", resolution);
+		billBoard.Draw(lightShader, pointLights[i].transform, view);
 	}
 }
 

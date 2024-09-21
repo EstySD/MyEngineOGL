@@ -62,23 +62,23 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
     }
     return Mesh(vertices, indices, mesh->mMaterialIndex-1);
 }
-Mat Model::loadMaterial(aiMaterial* mat) {
-    aiString str;
-    std::string s = directory;
-    mat->GetTexture(aiTextureType_DIFFUSE, 0, &str);
-    s.append(str.data);
-    unsigned int diffuseIndex = texturePush(s.c_str(), TextureType::diffuse);
-    s = directory;
-    mat->GetTexture(aiTextureType_SPECULAR, 0, &str);
-    s.append(str.data);
-    unsigned int specularIndex = texturePush(s.c_str(), TextureType::specular);
-    return Mat(textures_loaded[diffuseIndex], textures_loaded[specularIndex]);
-}
+
 
 void Model::LoadMaterials(const aiScene* scene)
 {
-    for (int i = 1; i < scene->mNumMaterials; i++) {
-        materials_loaded.push_back(loadMaterial(scene->mMaterials[i]));
+    for (unsigned int i = 1; i < scene->mNumMaterials; i++) {
+        aiMaterial* aimat = scene->mMaterials[i];
+        aiString str;
+        std::string s = directory;
+        aimat->GetTexture(aiTextureType_DIFFUSE, 0, &str);
+        s.append(str.data);
+        unsigned int diffuseIndex = texturePush(s.c_str(), TextureType::diffuse);
+        s = directory;
+        aimat->GetTexture(aiTextureType_SPECULAR, 0, &str);
+        s.append(str.data);
+        unsigned int specularIndex = texturePush(s.c_str(), TextureType::specular);
+        Mat mat(textures_loaded[diffuseIndex], textures_loaded[specularIndex]);
+        materials_loaded.push_back(mat);
     }
 }
 
@@ -92,15 +92,17 @@ unsigned int Model::texturePush(const char* texturePath, TextureType type) {
     }
     Texture texture(texturePath, type);
     textures_loaded.push_back(texture);
-    return textures_loaded.size()-1;
+    return (unsigned int)textures_loaded.size()-1;
 }
 void Model::Draw(Shader& shader) {
     for (int i = 0; i < meshes.size(); i++) {
-        meshes[i].Draw(shader, materials_loaded[meshes[i].materialIndex]);
+        materials_loaded[meshes[i].materialIndex].assign(shader);
+        meshes[i].Draw();
     }
 }
 void Model::Draw(Shader& shader, Mat& customMat) {
     for (int i = 0; i < meshes.size(); i++) {
-        meshes[i].Draw(shader, customMat);
+        customMat.assign(shader);
+        meshes[i].Draw();
     }
 }

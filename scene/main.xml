@@ -2,39 +2,18 @@
 <scene>
 	<camera>
 		<position>
-			<x>0.697251081</x>
-			<y>0.598592401</y>
-			<z>6.06100368</z>
+			<x>-0.35111022</x>
+			<y>0.964122474</y>
+			<z>4.89562035</z>
 		</position>
 	</camera>
 	<objects>
 		<object>
-			<path>res\teapot\teapot.obj</path>
+			<path>D:\LocalProjects\ogl\res\backpack\backpack.obj</path>
 			<transform>
 				<position>
-					<x>3.4000001</x>
-					<y>0.400000006</y>
-					<z>0</z>
-				</position>
-				<rotation>
-					<x>0</x>
-					<y>117.5</y>
-					<z>0</z>
-				</rotation>
-				<scale>
-					<x>1</x>
-					<y>1</y>
-					<z>1</z>
-				</scale>
-			</transform>
-			<material>0</material>
-		</object>
-		<object>
-			<path>res\backpack\backpack.obj</path>
-			<transform>
-				<position>
-					<x>0</x>
-					<y>0</y>
+					<x>-0.100000001</x>
+					<y>0.899999976</y>
 					<z>0</z>
 				</position>
 				<rotation>
@@ -54,29 +33,8 @@
 			<path>D:\LocalProjects\ogl\res\teapot\teapot.obj</path>
 			<transform>
 				<position>
-					<x>-3.29999995</x>
+					<x>-3.5999999</x>
 					<y>0</y>
-					<z>0</z>
-				</position>
-				<rotation>
-					<x>0</x>
-					<y>0</y>
-					<z>0</z>
-				</rotation>
-				<scale>
-					<x>1</x>
-					<y>1</y>
-					<z>1</z>
-				</scale>
-			</transform>
-			<material>0</material>
-		</object>
-		<object>
-			<path>D:\LocalProjects\ogl\res\teapot\teapot.obj</path>
-			<transform>
-				<position>
-					<x>0</x>
-					<y>2.5</y>
 					<z>0</z>
 				</position>
 				<rotation>
@@ -97,7 +55,8 @@
 		<shader>shaders\basicShader.glsl</shader>
 	</shaders>
 	<materials>
-		<material shader="0" />
+		<material shader="0" type="0" />
+		<material shader="0" type="0" />
 		<material shader="0">
 			<diffuse>res\awesomeface.png</diffuse>
 			<specular>res\awesomeface.png</specular>
@@ -120,9 +79,25 @@
 		<pointLights>
 			<pointLight>
 				<position>
-					<x>-1.29999995</x>
-					<y>0</y>
-					<z>0</z>
+					<x>-2.70000005</x>
+					<y>0.300000012</y>
+					<z>0.699999988</z>
+				</position>
+				<scale>0.200000003</scale>
+				<color>
+					<x>1</x>
+					<y>1</y>
+					<z>1</z>
+				</color>
+				<constant>0.200000003</constant>
+				<linear>0.400000006</linear>
+				<quadratic>1</quadratic>
+			</pointLight>
+			<pointLight>
+				<position>
+					<x>-0.200000003</x>
+					<y>0.300000012</y>
+					<z>0.200000003</z>
 				</position>
 				<scale>0.200000003</scale>
 				<color>
@@ -131,9 +106,30 @@
 					<z>1</z>
 				</color>
 				<constant>1</constant>
-				<linear>0.736999989</linear>
+				<linear>0.699999988</linear>
 				<quadratic>1.79999995</quadratic>
 			</pointLight>
 		</pointLights>
+		<spotLights>
+			<spotLight>
+				<position>
+					<x>0.0</x>
+					<y>0.0</y>
+					<z>0.0</z>
+				</position>
+				<rotation>
+					<x>0.0</x>
+					<y>0.0</y>
+					<z>0.0</z>
+				</rotation>
+				<color>
+					<x>1</x>
+					<y>1</y>
+					<z>1</z>
+				</color>
+				<cutOff>0.5</cutOff>
+				<outercutOff>0.6</outercutOff>
+			</spotLight>
+		</spotLights>
 	</lights>
 </scene>

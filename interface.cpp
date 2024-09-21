@@ -30,7 +30,7 @@ void Editor::Framerate()
     ImGui::Begin("FramerateWindow");
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
     ImGui::End();
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 }
 
 void Editor::SliderAppend(const char* name, glm::vec3& value, float min, float max)

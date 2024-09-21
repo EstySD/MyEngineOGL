@@ -1,6 +1,6 @@
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
+#include "ext/imgui/imgui.h"
+#include "ext/imgui/imgui_impl_glfw.h"
+#include "ext/imgui/imgui_impl_opengl3.h"
 
 #include <iostream>
 
@@ -40,7 +40,17 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    GLFWwindow* window = glfwCreateWindow((int)resolution.x, (int)resolution.y, "OpenGL", NULL, NULL);
+
+    const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+    glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+    glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+    glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+    glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+    resolution = glm::vec2(mode->width, mode->height);
+    
+    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "OpenGL",NULL, NULL);
+    glfwMaximizeWindow(window);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -54,7 +64,7 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-    glViewport(0, 0, resolution.x, resolution.y);
+    glViewport(0, 0, (GLsizei)resolution.x, (GLsizei)resolution.y);
     //callbacks
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -120,15 +130,17 @@ int main()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int n_width, int n_height)
 {
-    resolution = glm::vec2(n_width, n_height);
-    glViewport(0, 0, resolution.x, resolution.y);
-    lastMousPos = glm::vec2(resolution.x / 2, resolution.y / 2);
+    if (n_width <= 2 || n_height <= 1) return;
+    resolution = glm::vec2((float)n_width, (float)n_height);
+    glViewport(0, 0, (GLsizei)resolution.x, (GLsizei)resolution.y);
+    lastMousPos = glm::vec2((int)resolution.x / 2, (int)resolution.y / 2);
 }
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     if (interfaceToggle) return;
@@ -153,8 +165,6 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 void processInput(GLFWwindow* window) ///all in game inputs
 {
     if (interfaceToggle) return;
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
     glm::vec4 wasd = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         wasd.x = 1;
@@ -174,5 +184,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         interfaceToggle = !interfaceToggle;
         firstMouse = true;
     }
-        
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
 }

@@ -1,7 +1,6 @@
 #include "camera.h"
 
 Camera::Camera() {
-	
 }
 void Camera::SetSpawn(glm::vec3 position, glm::vec3 direction, glm::vec3 up, float fov) {
 	m_position = position;
@@ -49,7 +48,7 @@ void Camera::Zoom(float yoffset) {
 	if (m_fov > 45.0f)
 		m_fov = 45.0f;
 }
-glm::mat4 Camera::GetViewMat() {
+glm::mat4 Camera::GetView() {
 	glm::mat4 view = glm::mat4(1.0f);
 
 	view = glm::lookAt(m_position, m_position + m_direction, m_up);

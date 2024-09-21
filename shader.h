@@ -25,7 +25,8 @@ public:
     void setInt(const std::string& name, int value) const;
     void setFloat(const std::string& name, float value) const;
     void setMat4(const std::string& name, glm::mat4 trans) const;
-    void setVec3(const std::string& name, glm::vec3 vec) const;
+    void setVec(const std::string& name, glm::vec3 value) const;
+    void setVec(const std::string& name, glm::vec2 value) const;
     
 protected:
     ShaderSource ParseShader();
@@ -36,9 +37,10 @@ public:
     using Shader::Shader;
     void setDirLight(DirectLight dirLight);
     void updatePointLight(PointLight pointLight, int num);
-    void setSpotLight(SpotLight spotLight);
+    void updateSpotLight(SpotLight spotLight, int num);
 private:
     int pointLightCount=0;
+    int spotLightCount = 0;
 };
 
 #endif

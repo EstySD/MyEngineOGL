@@ -79,23 +79,36 @@
         glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()),
             1, GL_FALSE, glm::value_ptr(value));
     }
-    void Shader::setVec3(const std::string& name, glm::vec3 value) const{
+    void Shader::setVec(const std::string& name, glm::vec3 value) const{
         glUniform3f(glGetUniformLocation(id, name.c_str()), value.x, value.y, value.z);
+    }
+    void Shader::setVec(const std::string& name, glm::vec2 value) const
+    {
+        glUniform2f(glGetUniformLocation(id, name.c_str()), value.x, value.y);
     }
 ////////// Basic Shader
  void BasicShader::setDirLight(DirectLight dirLight) {
-        setVec3("dirLight.direction", dirLight.transform.getRot());
-        setVec3("dirLight.color", dirLight.color);
+        setVec("dirLight.direction", dirLight.transform.getRot());
+        setVec("dirLight.color", dirLight.color);
     }
 
     void BasicShader::updatePointLight(PointLight pointLight, int num) {
-        pointLightCount = glm::max(pointLightCount, num);
+        if (num > pointLightCount) {
+            pointLightCount++;
+            num = pointLightCount;
+        }
         setInt("pointLightsCount", pointLightCount+1);
         std::string count = std::to_string(num);
-        setVec3("pointLights[" + count + "].position", pointLight.transform.getPos());
-        setVec3("pointLights[" + count + "].color", pointLight.color);
-        setVec3("pointLights[" + count + "].clq", pointLight.clq);
+        setVec("pointLights[" + count + "].position", pointLight.transform.getPos());
+        setVec("pointLights[" + count + "].color", pointLight.color);
+        setVec("pointLights[" + count + "].clq", pointLight.clq);
     }
-    void BasicShader::setSpotLight(SpotLight spotLight) {
-        use();
+
+    void BasicShader::updateSpotLight(SpotLight spotLight, int num)
+    {
+        if (num > spotLightCount) {
+            spotLightCount++;
+            num = spotLightCount;
+        }
+
     }

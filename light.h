@@ -7,7 +7,7 @@
 #define LIGHT_H_
 class Light {
 public:
-	glm::vec3 color;
+	glm::vec3 color = glm::vec3(1.0, 1.0, 1.0);
 	Transform transform;
 };
 class PointLight:public Light {
@@ -21,6 +21,7 @@ public:
 	
 };
 class SpotLight :public Light {
+public:
 	float cutOff, outercutOff;
 	SpotLight(glm::vec3 position, glm::vec3 direction, glm::vec3 color, float cutOff, float outercutOff);
 	void UpdateCut(float cutOff, float outercutOff);

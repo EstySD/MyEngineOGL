@@ -13,7 +13,7 @@ struct Vertex {
 class Mesh {
 public:
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, unsigned int materialIndex = -1);
-    void Draw(Shader& shader, Mat& mat);
+    void Draw();
     void Delete();
     unsigned int materialIndex;
 protected:
@@ -24,56 +24,25 @@ protected:
     std::vector<unsigned int> indices;
     void setupMesh();
 };
-class LightMesh {
+class BillBoard {
 private:
     unsigned int VAO, VBO, EBO;
-public:
-    float vertices[108] = {
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
+    //pos + tex coords
+    float vertices[20] = {
+        -0.5f, -0.5f, 0.0f, -0.5f, -0.5f,
+        -0.5f, 0.5f, 0.0f, -0.5f, 0.5f,
+        0.5f, 0.5f, 0.0f,  0.5f, 0.5f,
+        0.5f, -0.5f, 0.0f, 0.5f, -0.5f,
 
-        -0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
-
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f,
     };
-    LightMesh();
-    void Draw(Shader& shader);
-};
+    unsigned int indices[6] = {
+        0,1,2,
+        0,2,3
+    };
+public:
+    BillBoard();
 
+    void Draw(Shader& shader, Transform& transform, glm::mat4& view);
+};
 #endif // !MESH_H_
 

@@ -1,12 +1,13 @@
+#include "ext/imgui/imgui.h"
+#include "ext/imgui/imgui_impl_glfw.h"
+#include "ext/imgui/imgui_impl_opengl3.h"
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "scene.h"
-#include "tinyfiledialogs/tinyfiledialogs.h"
+#include "ext/tinyfiledialogs/tinyfiledialogs.h"
+
 class Editor {
 private:
 	enum ObjectType {
