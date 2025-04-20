@@ -17,7 +17,6 @@ public:
 	Texture(const char* texturePath, TextureType type);
 	void Bind();
 private:
-	void Import(const char* texturePath, TextureType type);
 	void Gen();
 };
 #endif // !TEXTURE_H_

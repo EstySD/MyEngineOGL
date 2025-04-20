@@ -6,13 +6,9 @@ Texture::Texture() {
 Texture::Texture(const char* texturePath, TextureType type) {
     path = texturePath;
     Gen();
-    Import(texturePath, type);
-}
-void Texture::Import(const char* texturePath, TextureType type) {
     this->type = type;
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
-    std::string path = texturePath;
     unsigned char* data = stbi_load(texturePath, &width, &height, &nrChannels, 0);
     if (!data) {
         std::cout << "Failed to load texture: " << path << std::endl;
@@ -30,7 +26,6 @@ void Texture::Import(const char* texturePath, TextureType type) {
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(data);
 }
-
 void Texture::Gen() {
 
     glGenTextures(1, &id);

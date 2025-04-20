@@ -81,7 +81,6 @@ int main()
     ImGui_ImplOpenGL3_Init("#version 330 core");
 
     Scene scene("scene/main.xml");
-
     camera.SetSpawn(scene.viewPos, glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 45.0f);
     
     while (!glfwWindowShouldClose(window))

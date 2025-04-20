@@ -75,9 +75,9 @@ void Editor::ScenePanels(Scene& scene)
         ImGui::PopID();
     }
     if (ImGui::Button("+")) {
-        char const* fileTypes[2] = {"*.obj","*.fbx"};
+        char const* fileTypes[1] = {"*.obj"};
         char const* filePath = tinyfd_openFileDialog("",NULL,2, fileTypes,NULL,0);
-        scene.AppendObject(Model(filePath));
+        if(filePath !=NULL)scene.AppendObject(Model(filePath));
     }
     ImGui::End();
     //

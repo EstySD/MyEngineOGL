@@ -13,8 +13,8 @@ void Model::loadModel(std::string path) {
         return;
     }
     directory = path.substr(0, path.find_last_of("\\") + 1);
-    LoadMaterials(scene);
     processNode(scene->mRootNode, scene);
+    LoadMaterials(scene);
 }
 void Model::processNode(aiNode* node, const aiScene* scene) {
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
@@ -60,18 +60,25 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
         for (unsigned int j = 0; j < face.mNumIndices; j++)
             indices.push_back(face.mIndices[j]);
     }
-    return Mesh(vertices, indices, mesh->mMaterialIndex-1);
+    return Mesh(vertices, indices, mesh->mMaterialIndex);
 }
 
 
 void Model::LoadMaterials(const aiScene* scene)
 {
+    if (!scene->HasTextures()) {
+        materials_loaded.push_back(Mat());
+    }
     for (unsigned int i = 1; i < scene->mNumMaterials; i++) {
         aiMaterial* aimat = scene->mMaterials[i];
         aiString str;
-        std::string s = directory;
+        std::string s = directory; //file path
+        
         aimat->GetTexture(aiTextureType_DIFFUSE, 0, &str);
-        s.append(str.data);
+        s.append(str.data); // file path + path to texture
+        if (scene->GetEmbeddedTexture(s.c_str())) {
+            std::cout << "Doesnt support embedded textures"<< std::endl;
+        }
         unsigned int diffuseIndex = texturePush(s.c_str(), TextureType::diffuse);
         s = directory;
         aimat->GetTexture(aiTextureType_SPECULAR, 0, &str);

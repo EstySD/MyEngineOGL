@@ -2,9 +2,9 @@
 <scene>
 	<camera>
 		<position>
-			<x>-0.35111022</x>
-			<y>0.964122474</y>
-			<z>4.89562035</z>
+			<x>1.42186236</x>
+			<y>0.686357141</y>
+			<z>4.96626043</z>
 		</position>
 	</camera>
 	<objects>
@@ -50,12 +50,32 @@
 			</transform>
 			<material>0</material>
 		</object>
+		<object>
+			<path>D:\LocalProjects\ogl\res\plane\plane.obj</path>
+			<transform>
+				<position>
+					<x>0</x>
+					<y>-1.10000002</y>
+					<z>0</z>
+				</position>
+				<rotation>
+					<x>0</x>
+					<y>0</y>
+					<z>0</z>
+				</rotation>
+				<scale>
+					<x>2</x>
+					<y>1</y>
+					<z>2</z>
+				</scale>
+			</transform>
+			<material>0</material>
+		</object>
 	</objects>
 	<shaders>
 		<shader>shaders\basicShader.glsl</shader>
 	</shaders>
 	<materials>
-		<material shader="0" type="0" />
 		<material shader="0" type="0" />
 		<material shader="0">
 			<diffuse>res\awesomeface.png</diffuse>
